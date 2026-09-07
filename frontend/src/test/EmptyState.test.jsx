@@ -15,7 +15,7 @@ describe("EmptyState", () => {
     render(<EmptyState />);
 
     expect(
-      screen.getByText("No data found.")
+      screen.getByText("This should be fail.")
     ).toBeInTheDocument();
   });
 
