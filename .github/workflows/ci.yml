@@ -43,30 +43,6 @@ jobs:
             database: enrollments
             port: 5437
 
-  # =========================================================
-  # Frontend Tests
-  # =========================================================
-  frontend-test:
-    name: Test Frontend
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-
-      - name: Install dependencies
-        working-directory: ./frontend
-        run: npm ci
-
-      - name: Run frontend tests
-        working-directory: ./frontend
-        run: npm run test:run
-
     services:
       postgres:
         image: postgres:16
@@ -123,7 +99,30 @@ jobs:
         working-directory: ${{ matrix.service }}
         run: |
           pytest -v
+          
+  # =========================================================
+  # Frontend Tests
+  # =========================================================
+  frontend-test:
+    name: Test Frontend
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: npm run test:run
 
   # =========================================================
   # Build and Push Docker Images
