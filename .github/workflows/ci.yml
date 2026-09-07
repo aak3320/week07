@@ -43,6 +43,30 @@ jobs:
             database: enrollments
             port: 5437
 
+  # =========================================================
+  # Frontend Tests
+  # =========================================================
+  frontend-test:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: npm run test:run
+
     services:
       postgres:
         image: postgres:16
@@ -111,6 +135,7 @@ jobs:
     # All backend tests must pass before this job starts
     needs:
       - backend-test
+      - frontend-test
 
     # Build and push when code is pushed to main or manually triggered
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
